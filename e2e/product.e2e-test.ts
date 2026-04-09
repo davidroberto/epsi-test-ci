@@ -51,4 +51,20 @@ describe('Product API - E2E', () => {
         expect(response.status).toBe(200);
         expect(response.text).toBe('OK');
     });
+
+    test('POST /api/product - création réussie', async () => {
+        await dataSource.getRepository(Product).clear();
+
+        const response = await request(app)
+            .post('/api/product')
+            .send({ title: 'switch 2', description: 'nouvelle console', price: 500 })
+            .set('Content-Type', 'application/json');
+
+        expect(response.status).toBe(201);
+
+        const products = await dataSource.getRepository(Product).find();
+        expect(products).toHaveLength(1);
+        expect(products[0].title).toBe('switch 2');
+    });
+
 });
