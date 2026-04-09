@@ -8,7 +8,7 @@
     "build": "tsc",
     "test": "jest --config ./jest.config.js --watch",
     "test:unit": "jest --config ./jest.config.js --testPathPatterns='\\.spec\\.ts$' --testPathIgnorePatterns='\\.e2e\\.spec\\.ts$'",
-    "test:e2e": "jest --config ./jest.config.js --testPathPatterns='\\.e2e\\.spec\\.ts$'",
+    "test:e2e": "vitest run --config vitest.config.ts",
     "test:integration": "jest --config ./jest.config.js --passWithNoTests --testPathPatterns='\\.integration\\.spec\\.ts$'",
     "test:migration": "jest --config ./jest.config.js --passWithNoTests --testPathPatterns='\\.migration\\.spec\\.ts$'",
     "lint": "eslint . --ext .ts",
