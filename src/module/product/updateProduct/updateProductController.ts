@@ -1,9 +1,8 @@
+import express, { Request, Response } from 'express';
 import { UpdateProductTypeOrmRepository } from './updateProductTypeOrmRepository';
-
-const express = require('express');
-const router = express.Router();
-import { Request, Response } from 'express';
 import { UpdateProductUsecase } from './updateProductUseCase';
+
+const router = express.Router();
 
 router.post('/product/:id', async (request: Request, response: Response) => {
     const id = parseInt(request.params.id as string);
@@ -25,4 +24,4 @@ router.post('/product/:id', async (request: Request, response: Response) => {
     return response.status(201).json();
 });
 
-module.exports = router;
+export default router;

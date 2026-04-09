@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
-const cors = require('cors');
-const createProductController = require('../module/product/createProduct/createProductController');
-const updateProductController = require('../module/product/updateProduct/updateProductController');
+import cors from 'cors';
+import createProductController from '../module/product/createProduct/createProductController';
+import updateProductController from '../module/product/updateProduct/updateProductController';
 
 export function buildApp() {
     const app = express();

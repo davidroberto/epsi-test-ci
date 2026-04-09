@@ -1,9 +1,8 @@
+import express, { Request, Response } from 'express';
 import { CreateProductTypeOrmRepository } from './createProductTypeOrmRepository';
-
-const express = require('express');
-const router = express.Router();
-import { Request, Response } from 'express';
 import { CreateProductUseCase } from './createProductUseCase';
+
+const router = express.Router();
 
 router.post('/product', async (request: Request, response: Response) => {
     const { title, description, price } = request.body;
@@ -24,4 +23,4 @@ router.post('/product', async (request: Request, response: Response) => {
     return response.status(201).json();
 });
 
-module.exports = router;
+export default router;
