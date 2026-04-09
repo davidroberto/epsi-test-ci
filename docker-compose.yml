@@ -1,8 +1,19 @@
 services:
   app-node:
     image: node:25-alpine
+    working_dir: /app
+    volumes:
+      - .:/app
     ports:
       - "30010:3010"
+    environment:
+      DB_HOST: postgres-bdd
+      DB_PORT: 5432
+      DB_USER: david
+      DB_PW: hello
+      DB_NAME: epsi-test-ci
+      PORT: 3010
+    command: sh -c "npm install && npm run dev"
     depends_on:
       - postgres-bdd
 
