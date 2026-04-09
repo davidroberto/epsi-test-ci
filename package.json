@@ -1,0 +1,50 @@
+{
+  "name": "epsi-test-ci",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.ts",
+    "start": "node build/index.js",
+    "build": "tsc",
+    "test": "jest --config ./jest.config.js --watch",
+    "test:unit": "jest --config ./jest.config.js --testPathPatterns='\\.spec\\.ts$' --testPathIgnorePatterns='\\.e2e\\.spec\\.ts$'",
+    "test:e2e": "jest --config ./jest.config.js --testPathPatterns='\\.e2e\\.spec\\.ts$'",
+    "test:integration": "jest --config ./jest.config.js --passWithNoTests --testPathPatterns='\\.integration\\.spec\\.ts$'",
+    "test:migration": "jest --config ./jest.config.js --passWithNoTests --testPathPatterns='\\.migration\\.spec\\.ts$'",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "format": "prettier --write \"src/**/*.ts\" \"tests/**/*.ts\"",
+    "format:check": "prettier --check \"src/**/*.ts\" \"tests/**/*.ts\""
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@types/express": "^5.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "pg": "^8.16.0",
+    "typeorm": "^0.3.20",
+    "wait-port": "^1.1.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.26.10",
+    "@babel/plugin-proposal-class-properties": "^7.18.6",
+    "@babel/plugin-proposal-decorators": "^7.25.9",
+    "@babel/preset-env": "^7.26.9",
+    "@babel/preset-typescript": "^7.26.0",
+    "@jest/globals": "^29.7.0",
+    "@testcontainers/postgresql": "^11.0.3",
+    "@types/node": "^22.10.5",
+    "@types/supertest": "^6.0.3",
+    "babel-jest": "^29.7.0",
+    "jest": "^30.0.0",
+    "prettier": "^3.7.2",
+    "supertest": "^7.1.1",
+    "testcontainers": "^11.0.3",
+    "ts-jest": "^29.4.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3"
+  }
+}
