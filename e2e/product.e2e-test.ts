@@ -67,4 +67,47 @@ describe('Product API - E2E', () => {
         expect(products[0].title).toBe('switch 2');
     });
 
+    test('POST /api/product - titre trop court retourne 400', async () => {
+        const response = await request(app)
+            .post('/api/product')
+            .send({ title: 'sw', description: 'desc', price: 500 })
+            .set('Content-Type', 'application/json');
+
+        expect(response.status).toBe(400);
+        expect(response.body.message).toBe('titre trop court');
+    });
+
+    test('POST /api/product/:id - modification réussie', async () => {
+        await dataSource.getRepository(Product).clear();
+
+        const product = await dataSource.getRepository(Product).save({
+            title: 'original',
+            description: 'desc',
+            price: 100,
+        });
+
+        const response = await request(app)
+            .post(`/api/product/${product.id}`)
+            .send({ title: 'modifié', description: 'nouvelle desc', price: 200 })
+            .set('Content-Type', 'application/json');
+
+        expect(response.status).toBe(201);
+
+        const updated = await dataSource.getRepository(Product).findOneBy({ id: product.id });
+        expect(updated.title).toBe('modifié');
+        expect(updated.price).toBe(200);
+    });
+
+    test('POST /api/product/:id - produit inexistant retourne 400', async () => {
+
+        await dataSource.getRepository(Product).clear();
+
+        const response = await request(app)
+            .post('/api/product/99999')
+            .send({ title: 'test', description: 'desc', price: 100 })
+            .set('Content-Type', 'application/json');
+
+        expect(response.status).toBe(400);
+        expect(response.body.message).toBe('Product not found');
+    });
 });
