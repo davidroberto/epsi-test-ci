@@ -14,34 +14,49 @@ export class Product {
     @Column({ type: 'text', nullable: true })
     public description: string;
 
+    @Column({ type: 'varchar', length: 100 })
+    public category: string;
+
     constructor({
         title,
         description,
-        price
+        price,
+        category
     }: {
         title: string;
         description: string;
         price: number;
+        category: string;
     }) {
         this.checkPrice(price);
         this.validateTitle(title);
+        this.validateCategory(category);
         this.title = title;
         this.description = description;
         this.price = price;
+        this.category = category;
     }
 
-    update(title: string, description: string, price: number) {
+    update(title: string, description: string, price: number, category: string) {
         this.checkPrice(price);
         this.validateTitle(title);
+        this.validateCategory(category);
 
         this.title = title;
         this.description = description;
         this.price = price;
+        this.category = category;
     }
 
     private validateTitle(title: string) {
         if (title.length < 3) {
             throw new Error('titre trop court');
+        }
+    }
+
+    private validateCategory(category: string) {
+        if (!category || category.length === 0) {
+            throw new Error('catégorie obligatoire');
         }
     }
 

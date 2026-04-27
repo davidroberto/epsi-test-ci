@@ -5,6 +5,7 @@ type UpdateProductCommand = {
     title: string;
     description: string;
     price: number;
+    category: string;
 };
 
 export class UpdateProductUsecase {
@@ -15,7 +16,7 @@ export class UpdateProductUsecase {
     }
 
     async execute(command: UpdateProductCommand): Promise<void> {
-        const { id: productId, title, description, price } = command;
+        const { id: productId, title, description, price, category } = command;
 
         const product = await this.productRepository.findOneById(productId);
 
@@ -23,7 +24,7 @@ export class UpdateProductUsecase {
             throw new Error('Product not found');
         }
 
-        product.update(title, description, price);
+        product.update(title, description, price, category);
 
         try {
             return await this.productRepository.save(product);

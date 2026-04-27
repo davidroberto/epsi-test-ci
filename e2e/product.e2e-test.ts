@@ -5,6 +5,7 @@ import request from 'supertest';
 import { Express } from 'express';
 import { Product } from '../src/module/product/Product';
 import { buildApp } from '../src/config/app';
+import { buildDataSourceOptions } from '../src/config/db.config';
 
 describe('Product API - E2E', () => {
     let container: StartedPostgreSqlContainer;
@@ -16,18 +17,16 @@ describe('Product API - E2E', () => {
             .withExposedPorts(5432)
             .start();
 
-        dataSource = new DataSource({
-            type: 'postgres',
-            host: container.getHost(),
-            port: container.getPort(),
-            username: container.getUsername(),
-            password: container.getPassword(),
-            database: container.getDatabase(),
-            logging: false,
-            entities: [Product],
-            synchronize: true,
-            entitySkipConstructor: true,
-        });
+        dataSource = new DataSource(
+            buildDataSourceOptions({
+                host: container.getHost(),
+                port: container.getPort(),
+                username: container.getUsername(),
+                password: container.getPassword(),
+                database: container.getDatabase(),
+                migrationsRun: true,
+            })
+        );
 
         await dataSource.initialize();
 
@@ -57,7 +56,7 @@ describe('Product API - E2E', () => {
 
         const response = await request(app)
             .post('/api/product')
-            .send({ title: 'switch 2', description: 'nouvelle console', price: 500 })
+            .send({ title: 'switch 2', description: 'nouvelle console', price: 500, category: 'console' })
             .set('Content-Type', 'application/json');
 
         expect(response.status).toBe(201);
@@ -70,7 +69,7 @@ describe('Product API - E2E', () => {
     test('POST /api/product - titre trop court retourne 400', async () => {
         const response = await request(app)
             .post('/api/product')
-            .send({ title: 'sw', description: 'desc', price: 500 })
+            .send({ title: 'sw', description: 'desc', price: 500, category: 'console' })
             .set('Content-Type', 'application/json');
 
         expect(response.status).toBe(400);
@@ -84,11 +83,12 @@ describe('Product API - E2E', () => {
             title: 'original',
             description: 'desc',
             price: 100,
+            category: 'divers',
         });
 
         const response = await request(app)
             .post(`/api/product/${product.id}`)
-            .send({ title: 'modifié', description: 'nouvelle desc', price: 200 })
+            .send({ title: 'modifié', description: 'nouvelle desc', price: 200, category: 'divers' })
             .set('Content-Type', 'application/json');
 
         expect(response.status).toBe(201);
@@ -104,7 +104,7 @@ describe('Product API - E2E', () => {
 
         const response = await request(app)
             .post('/api/product/99999')
-            .send({ title: 'test', description: 'desc', price: 100 })
+            .send({ title: 'test', description: 'desc', price: 100, category: 'divers' })
             .set('Content-Type', 'application/json');
 
         expect(response.status).toBe(400);

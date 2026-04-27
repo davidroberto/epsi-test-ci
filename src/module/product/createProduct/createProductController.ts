@@ -5,13 +5,13 @@ import { CreateProductUseCase } from './createProductUseCase';
 const router = express.Router();
 
 router.post('/product', async (request: Request, response: Response) => {
-    const { title, description, price } = request.body;
+    const { title, description, price, category } = request.body;
 
     const createProductTypeOrmRepository = new CreateProductTypeOrmRepository();
     const createProductUseCase = new CreateProductUseCase(createProductTypeOrmRepository);
 
     try {
-        await createProductUseCase.execute({ title, description, price });
+        await createProductUseCase.execute({ title, description, price, category });
     } catch (error) {
         if (error instanceof Error) {
             return response.status(400).json({ message: error.message });
